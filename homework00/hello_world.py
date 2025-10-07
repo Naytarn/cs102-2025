@@ -1,2 +1,9 @@
+'''
+Corrected the mistake. Now the file outputs a string, as expected.
+'''
+
 def text():
-    return message
+    '''
+    Function returns "message" string when called.
+    '''
+    return "message"

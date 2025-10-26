@@ -34,8 +34,15 @@ def gcd(a: int, b: int) -> int:
         return a
     else:
         return gcd(b, a % b)
-    pass
 
+def gcd_rasshirenniy(a: int, b: int):
+    if a == 0:
+        return b, 0, 1
+    nod, x1, y1 = gcd_rasshirenniy(b % a, a)
+    x = y1 - (b // a) * x1
+    y = x1
+
+    return nod, x, y
 
 def multiplicative_inverse(e: int, phi: int) -> int:
     """
@@ -44,9 +51,9 @@ def multiplicative_inverse(e: int, phi: int) -> int:
     >>> multiplicative_inverse(7, 40)
     23
     """
-    # PUT YOUR CODE HERE
-    pass
+    nod, x, y = gcd_rasshirenniy(phi, e)
 
+    return y % phi
 
 def generate_keypair(p: int, q: int) -> tp.Tuple[tp.Tuple[int, int], tp.Tuple[int, int]]:
     if not (is_prime(p) and is_prime(q)):
@@ -63,7 +70,7 @@ def generate_keypair(p: int, q: int) -> tp.Tuple[tp.Tuple[int, int], tp.Tuple[in
 
     # Use Euclid's Algorithm to verify that e and phi(n) are coprime
     g = gcd(e, phi)
-    while g != 1 or not is_prime(e):
+    while g != 1:
         e = random.randrange(1, phi)
         g = gcd(e, phi)
 

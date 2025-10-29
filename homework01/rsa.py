@@ -34,9 +34,10 @@ def gcd(a: int, b: int) -> int:
     >>> gcd(3, 7)
     1
     """
-    if b == 0:
-        return a
-    return gcd(b, a % b)
+    while b:
+        a, b = b, a % b
+
+    return a
 
 
 def gcd_extended(a: int, b: int):

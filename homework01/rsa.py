@@ -39,17 +39,19 @@ def gcd(a: int, b: int) -> int:
     return gcd(b, a % b)
 
 
-def gcd_rasshirenniy(a: int, b: int):
+def gcd_extended(a: int, b: int):
     """
-    Rasshirenniy Euclid's algorythm
+    Calculates greatest common diviser and parameters x, y using the extended Euclidean algorythm
     """
-    if a == 0:
-        return b, 0, 1
-    nod, x1, y1 = gcd_rasshirenniy(b % a, a)
-    x = y1 - (b // a) * x1
-    y = x1
+    x, x2, y, y2 = 1, 0, 0, 1
 
-    return nod, x, y
+    while b:
+        q = a // b
+        a, b = b, a % b
+        x, x2 = x2, x - q * x2
+        y, y2 = y2, y - q * y2
+
+    return a, x, y
 
 
 def multiplicative_inverse(e: int, phi: int) -> int:
@@ -59,7 +61,7 @@ def multiplicative_inverse(e: int, phi: int) -> int:
     >>> multiplicative_inverse(7, 40)
     23
     """
-    _, _, y = gcd_rasshirenniy(phi, e)
+    _, _, y = gcd_extended(phi, e)
 
     return y % phi
 

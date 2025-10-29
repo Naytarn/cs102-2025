@@ -5,6 +5,7 @@ the shift to be performed, return encrypted/decrypted text
 
 ALPHABET_LENGTH = 26
 
+
 def encrypt_caesar(plaintext: str, shift: int = 3) -> str:
     """
     Encrypts plaintext using a Caesar cipher.

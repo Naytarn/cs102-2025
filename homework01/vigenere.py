@@ -18,15 +18,12 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     ciphertext = ""
     indx = 0
     for char in plaintext:
-        if "a" <= char <= "z":
+        if char.isalpha():
+            if char.islower():
+                start = ord("a")
+            else:
+                start = ord("A")
             keyletter = keyword[indx % len(keyword)]
-            start = ord("a")
-            shift = ord(keyletter) - start
-            shifted_char = chr(((ord(char) + shift - start) % ALPHABET_LENGTH) + start)
-            ciphertext += shifted_char
-        elif "A" <= char <= "Z":
-            keyletter = keyword[indx % len(keyword)]
-            start = ord("A")
             shift = ord(keyletter) - start
             shifted_char = chr(((ord(char) + shift - start) % ALPHABET_LENGTH) + start)
             ciphertext += shifted_char
@@ -49,15 +46,12 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     plaintext = ""
     indx = 0
     for char in ciphertext:
-        if "a" <= char <= "z":
+        if char.isalpha():
+            if char.islower():
+                start = ord("a")
+            else:
+                start = ord("A")
             keyletter = keyword[indx % len(keyword)]
-            start = ord("a")
-            shift = ord(keyletter) - start
-            shifted_char = chr(((ord(char) - shift - start) % ALPHABET_LENGTH) + start)
-            plaintext += shifted_char
-        elif "A" <= char <= "Z":
-            keyletter = keyword[indx % len(keyword)]
-            start = ord("A")
             shift = ord(keyletter) - start
             shifted_char = chr(((ord(char) - shift - start) % ALPHABET_LENGTH) + start)
             plaintext += shifted_char

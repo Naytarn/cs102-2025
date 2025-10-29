@@ -2,6 +2,7 @@
 Functions encrypt_vigenere and decrypt_vigenere accept text to cypher/decypher and a keyword,
 each letter's index indicating the shift to be performed, return encrypted/decrypted text
 """
+
 ALPHABET_LENGTH = 26
 
 

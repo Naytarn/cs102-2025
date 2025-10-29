@@ -2,6 +2,7 @@
 Functions encrypt_vigenere and decrypt_vigenere accept text to cypher/decypher and a keyword,
 each letter's index indicating the shift to be performed, return encrypted/decrypted text
 """
+ALPHABET_LENGTH = 26
 
 
 def encrypt_vigenere(plaintext: str, keyword: str) -> str:
@@ -21,13 +22,13 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
             keyletter = keyword[indx % len(keyword)]
             start = ord("a")
             shift = ord(keyletter) - start
-            shifted_char = chr(((ord(char) + shift - start) % 26) + start)
+            shifted_char = chr(((ord(char) + shift - start) % ALPHABET_LENGTH) + start)
             ciphertext += shifted_char
         elif "A" <= char <= "Z":
             keyletter = keyword[indx % len(keyword)]
             start = ord("A")
             shift = ord(keyletter) - start
-            shifted_char = chr(((ord(char) + shift - start) % 26) + start)
+            shifted_char = chr(((ord(char) + shift - start) % ALPHABET_LENGTH) + start)
             ciphertext += shifted_char
         else:
             ciphertext += char
@@ -52,13 +53,13 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
             keyletter = keyword[indx % len(keyword)]
             start = ord("a")
             shift = ord(keyletter) - start
-            shifted_char = chr(((ord(char) - shift - start) % 26) + start)
+            shifted_char = chr(((ord(char) - shift - start) % ALPHABET_LENGTH) + start)
             plaintext += shifted_char
         elif "A" <= char <= "Z":
             keyletter = keyword[indx % len(keyword)]
             start = ord("A")
             shift = ord(keyletter) - start
-            shifted_char = chr(((ord(char) - shift - start) % 26) + start)
+            shifted_char = chr(((ord(char) - shift - start) % ALPHABET_LENGTH) + start)
             plaintext += shifted_char
         else:
             plaintext += char

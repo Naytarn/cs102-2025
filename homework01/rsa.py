@@ -42,6 +42,10 @@ def gcd(a: int, b: int) -> int:
 def gcd_extended(a: int, b: int):
     """
     Calculates greatest common diviser and parameters x, y using the extended Euclidean algorythm
+    >>> gcd_extended(30, 20)
+    (10, 1, -1)
+    >>> gcd_extended(56, 15)
+    (1, -4, 15)
     """
     x, x2, y, y2 = 1, 0, 0, 1
 

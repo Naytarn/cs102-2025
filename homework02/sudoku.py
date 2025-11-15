@@ -54,7 +54,7 @@ def get_row(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str
     >>> get_row([['1', '2', '3'], ['4', '5', '6'], ['.', '8', '9']], (2, 0))
     ['.', '8', '9']
     """
-    return [grid[pos[0]][i] for i in range(len(grid))]
+    return grid[pos[0]]
 
 
 def get_col(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str]:
@@ -100,6 +100,7 @@ def find_empty_positions(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.Tuple[in
         for col in range(len(grid)):
             if grid[row][col] == '.':
                 return row, col
+    return None
 
 
 def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.Set[str]:
@@ -112,16 +113,10 @@ def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -
     >>> values == {'2', '5', '9'}
     True
     """
-    possible_digits = set()
-    for i in range(len(grid)):
-        digit = str(i + 1)
-        if (digit not in get_row(grid, pos)
-                and digit not in get_col(grid, pos)
-                and digit not in get_block(grid, pos)):
-            possible_digits.add(digit)
-
-    if possible_digits:
-        return possible_digits
+    used_digits = set()
+    used_digits.update(get_row(grid, pos), get_col(grid, pos), get_block(grid, pos))
+    used_digits.discard('.')
+    return set(str(i + 1) for i in range(len(grid))) - used_digits
 
 
 def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
@@ -136,7 +131,20 @@ def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
     >>> solve(grid)
     [['5', '3', '4', '6', '7', '8', '9', '1', '2'], ['6', '7', '2', '1', '9', '5', '3', '4', '8'], ['1', '9', '8', '3', '4', '2', '5', '6', '7'], ['8', '5', '9', '7', '6', '1', '4', '2', '3'], ['4', '2', '6', '8', '5', '3', '7', '9', '1'], ['7', '1', '3', '9', '2', '4', '8', '5', '6'], ['9', '6', '1', '5', '3', '7', '2', '8', '4'], ['2', '8', '7', '4', '1', '9', '6', '3', '5'], ['3', '4', '5', '2', '8', '6', '1', '7', '9']]
     """
-    pass
+    empty_space = find_empty_positions(grid)
+    if not empty_space:
+        return grid
+    possible_values = find_possible_values(grid, (empty_space[0], empty_space[1]))
+    if not possible_values:
+        return None
+    for value in possible_values:
+        grid[empty_space[0]][empty_space[1]] = value
+        solution = solve(grid)
+        if solution:
+            return solution
+        grid[empty_space[0]][empty_space[1]] = '.'
+
+    return None
 
 
 def check_solution(solution: tp.List[tp.List[str]]) -> bool:

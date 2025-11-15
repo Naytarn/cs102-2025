@@ -13,13 +13,14 @@ def read_sudoku(path: tp.Union[str, pathlib.Path]) -> tp.List[tp.List[str]]:
 
 
 def create_grid(puzzle: str) -> tp.List[tp.List[str]]:
+    """ Превратить данные в таблицу """
     digits = [c for c in puzzle if c in "123456789."]
     grid = group(digits, 9)
     return grid
 
 
 def display(grid: tp.List[tp.List[str]]) -> None:
-    """Вывод Судоку """
+    """ Вывод Судоку """
     width = 2
     line = "+".join(["-" * (width * 3)] * 3)
     for row in range(9):
@@ -41,7 +42,7 @@ def group(values: tp.List[T], n: int) -> tp.List[tp.List[T]]:
     >>> group([1,2,3,4,5,6,7,8,9], 3)
     [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
     """
-    pass
+    return [values[i:i+n] for i in range(0, len(values), n)]
 
 
 def get_row(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str]:

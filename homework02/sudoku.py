@@ -66,7 +66,7 @@ def get_col(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str
     >>> get_col([['1', '2', '3'], ['4', '5', '6'], ['.', '8', '9']], (0, 2))
     ['3', '6', '9']
     """
-    return [grid[i][pos[1]] for i in range(len(grid[0]))]
+    return [grid[i][pos[1]] for i in range(len(grid))]
 
 
 def get_block(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str]:
@@ -96,7 +96,10 @@ def find_empty_positions(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.Tuple[in
     >>> find_empty_positions([['1', '2', '3'], ['4', '5', '6'], ['.', '8', '9']])
     (2, 0)
     """
-    pass
+    for row in range(len(grid)):
+        for col in range(len(grid)):
+            if grid[row][col] == '.':
+                return row, col
 
 
 def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.Set[str]:
@@ -109,7 +112,16 @@ def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -
     >>> values == {'2', '5', '9'}
     True
     """
-    pass
+    possible_digits = set()
+    for i in range(len(grid)):
+        digit = str(i + 1)
+        if (digit not in get_row(grid, pos)
+                and digit not in get_col(grid, pos)
+                and digit not in get_block(grid, pos)):
+            possible_digits.add(digit)
+
+    if possible_digits:
+        return possible_digits
 
 
 def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:

@@ -275,7 +275,16 @@ def generate_sudoku(N: int) -> tp.List[tp.List[str]]:
     >>> check_solution(solution)
     True
     """
-    pass
+    full_sudoku = generate_solved_sudoku()
+    digits_left = min(81, N)
+    positions = [i for i in range(81)]
+    empty_positions = random.sample(positions, 81 - digits_left)
+
+    for pos in empty_positions:
+        row, col = pos // 9, pos % 9
+        full_sudoku[row][col] = '.'
+
+    return full_sudoku
 
 
 if __name__ == "__main__":

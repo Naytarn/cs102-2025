@@ -228,7 +228,7 @@ def check_solution(solution: tp.List[tp.List[str]]) -> bool:
 
 def generate_solved_sudoku() -> tp.List[tp.List[str]]:
     """ Генерация уже решённого судоку
-    >>> check_solution(base_sudoku)
+    >>> check_solution(generate_solved_sudoku())
     True
     """
 
@@ -246,7 +246,6 @@ def generate_solved_sudoku() -> tp.List[tp.List[str]]:
 
     digits = [str(i) for i in range(1, 10)]
     shuffled_digits = random.sample(digits, 9)
-    print(shuffled_digits)
 
     for row in range(9):
         for col in range(9):

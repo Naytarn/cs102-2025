@@ -1,4 +1,5 @@
 import pathlib
+import random
 import typing as tp
 
 T = tp.TypeVar("T")
@@ -225,8 +226,36 @@ def check_solution(solution: tp.List[tp.List[str]]) -> bool:
     return True
 
 
+def generate_solved_sudoku() -> tp.List[tp.List[str]]:
+    """ Генерация уже решённого судоку
+    >>> check_solution(base_sudoku)
+    True
+    """
+
+    base_sudoku = [
+        ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
+        ["7", "8", "9", "1", "2", "3", "4", "5", "6"],
+        ["4", "5", "6", "7", "8", "9", "1", "2", "3"],
+        ["2", "3", "4", "5", "6", "7", "8", "9", "1"],
+        ["8", "9", "1", "2", "3", "4", "5", "6", "7"],
+        ["5", "6", "7", "8", "9", "1", "2", "3", "4"],
+        ["3", "4", "5", "6", "7", "8", "9", "1", "2"],
+        ["9", "1", "2", "3", "4", "5", "6", "7", "8"],
+        ["6", "7", "8", "9", "1", "2", "3", "4", "5"]
+    ]
+
+    digits = [str(i) for i in range(1, 10)]
+    shuffled_digits = random.sample(digits, 9)
+    print(shuffled_digits)
+
+    for row in range(9):
+        for col in range(9):
+            base_sudoku[row][col] = shuffled_digits[int(base_sudoku[row][col]) - 1]
+
+    return base_sudoku
+
 def generate_sudoku(N: int) -> tp.List[tp.List[str]]:
-    """Генерация судоку заполненного на N элементов
+    """ Генерация судоку заполненного на N элементов
     >>> grid = generate_sudoku(40)
     >>> sum(1 for row in grid for e in row if e == '.')
     41
@@ -258,3 +287,4 @@ if __name__ == "__main__":
             print(f"Puzzle {fname} can't be solved")
         else:
             display(solution)
+

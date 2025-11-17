@@ -19,7 +19,9 @@ def remove_wall(
     :return:
     """
 
-    pass
+    wall_x, wall_y = coord
+    grid[wall_x][wall_y] = ' '
+    return grid
 
 
 def bin_tree_maze(

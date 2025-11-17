@@ -50,6 +50,20 @@ def bin_tree_maze(
     # 3. перейти в следующую клетку, сносим между клетками стену
     # 4. повторять 2-3 до тех пор, пока не будут пройдены все клетки
 
+    for cell in empty_cells:
+        x, y = cell
+        directions = []
+        if x - 2 >= 1:
+            directions.append("up")
+        if y + 2 < cols - 1:  # Вправо
+            directions.append("right")
+        if directions:
+            direction = choice(directions)
+            if direction == "up":
+                remove_wall(grid, (x-1, y))
+            elif direction == "right":
+                remove_wall(grid, (x, y+1))
+
     # генерация входа и выхода
     if random_exit:
         x_in, x_out = randint(0, rows - 1), randint(0, rows - 1)

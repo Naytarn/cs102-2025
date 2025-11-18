@@ -154,7 +154,11 @@ def add_path_to_grid(
 
 if __name__ == "__main__":
     print(pd.DataFrame(bin_tree_maze(15, 15)))
-    GRID = bin_tree_maze(15, 15)
+    y_n = input("Do you want to enter the door positions yourself? y/n")
+    if y_n == "y":
+        GRID = bin_tree_maze(15, 15, False)
+    else:
+        GRID = bin_tree_maze(15, 15)
     print(pd.DataFrame(GRID))
     _, PATH = solve_maze(GRID)
     MAZE = add_path_to_grid(GRID, PATH)

@@ -256,8 +256,7 @@ def generate_solved_sudoku() -> tp.List[tp.List[str]]:
         ["6", "7", "8", "9", "1", "2", "3", "4", "5"],
     ]
 
-    digits = [str(i) for i in range(1, 10)]
-    shuffled_digits = random.sample(digits, 9)
+    shuffled_digits = random.sample([str(i) for i in range(1, 10)], 9)
 
     for row in range(9):
         for col in range(9):

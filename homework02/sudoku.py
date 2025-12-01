@@ -289,8 +289,7 @@ def generate_sudoku(digits_in_sudoku: int) -> tp.List[tp.List[str]]:
     """
     full_sudoku = generate_solved_sudoku()
     digits_left = min(81, digits_in_sudoku)
-    positions = list(range(81))
-    empty_positions = random.sample(positions, 81 - digits_left)
+    empty_positions = random.sample(list(range(81)), 81 - digits_left)
 
     for pos in empty_positions:
         row, col = pos // 9, pos % 9

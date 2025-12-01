@@ -4,7 +4,6 @@ from typing import List, Optional, Tuple, Union
 
 import pandas as pd
 
-
 def create_grid(rows: int = 15, cols: int = 15) -> List[List[Union[str, int]]]:
     return [["■"] * cols for _ in range(rows)]
 
@@ -102,7 +101,19 @@ def make_step(grid: List[List[Union[str, int]]], k: int) -> List[List[Union[str,
     :return:
     """
 
-    pass
+    directions = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+
+    for i, row in enumerate(grid):
+        for j, cell in enumerate(row):
+            if cell == k:
+                for direction in directions:
+                    cell_x = i + direction[0]
+                    cell_y = j + direction[1]
+                    if len(grid) > cell_x >= 0 and len(grid[0]) > cell_y >= 0:
+                        if grid[cell_x][cell_y] == 0:
+                            grid[cell_x][cell_y] = k + 1
+
+    return grid
 
 
 def shortest_path(
@@ -125,9 +136,10 @@ def encircled_exit(grid: List[List[Union[str, int]]], coord: Tuple[int, int]) ->
     :return:
     """
 
+    directions = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+
     deadend_count = 0
     exit_x, exit_y = coord
-    directions = [[0, 1], [0, -1], [1, 0], [-1, 0]]
     for direction in directions:
         x_check = exit_x + direction[0]
         y_check = exit_y + direction[1]
@@ -148,7 +160,13 @@ def solve_maze(
     :return:
     """
 
-    pass
+    exits = get_exits(grid)
+    if len(exits) == 1:
+        return grid, exits
+
+    for door in exits:
+        if encircled_exit(grid, door):
+            return None
 
 
 def add_path_to_grid(

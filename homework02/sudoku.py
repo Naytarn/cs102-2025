@@ -83,11 +83,7 @@ def get_block(grid_get_block: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) ->
     block_row = (pos[0] // 3) * 3
     block_col = (pos[1] // 3) * 3
 
-    return [
-        grid_get_block[i][j]
-        for i in range(block_row, block_row + 3)
-        for j in range(block_col, block_col + 3)
-    ]
+    return [grid_get_block[i][j] for i in range(block_row, block_row + 3) for j in range(block_col, block_col + 3)]
 
 
 def find_empty_positions(grid_find_empty: tp.List[tp.List[str]]) -> tp.Optional[tp.Tuple[int, int]]:
@@ -117,11 +113,7 @@ def find_possible_values(find_nums: tp.List[tp.List[str]], pos: tp.Tuple[int, in
     True
     """
 
-    used_digits = (
-            set(get_row(grid, pos))
-            | set(get_col(grid, pos))
-            | set(get_block(grid, pos))
-    )
+    used_digits = set(get_row(find_nums, pos)) | set(get_col(find_nums, pos)) | set(get_block(find_nums, pos))
     used_digits.discard(".")
     return set(str(i + 1) for i in range(len(find_nums))) - used_digits
 

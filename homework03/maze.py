@@ -20,7 +20,17 @@ def remove_wall(
     """
 
     wall_x, wall_y = coord
-    grid[wall_x][wall_y] = ' '
+    directions = []
+    if wall_x - 2 >= 1:
+        directions.append("up")
+    if wall_y + 2 < len(grid[0]) - 1:
+        directions.append("right")
+    if directions:
+        direction = choice(directions)
+        if direction == "right":
+            grid[wall_x][wall_y + 1] = ' '
+        elif direction == "up":
+            grid[wall_x - 1][wall_y] = ' '
     return grid
 
 
@@ -52,17 +62,8 @@ def bin_tree_maze(
 
     for cell in empty_cells:
         x, y = cell
-        directions = []
-        if x - 2 >= 1:
-            directions.append("up")
-        if y + 2 < cols - 1:  # Вправо
-            directions.append("right")
-        if directions:
-            direction = choice(directions)
-            if direction == "up":
-                remove_wall(grid, (x-1, y))
-            elif direction == "right":
-                remove_wall(grid, (x, y+1))
+        remove_wall(grid, (x, y))
+
 
     # генерация входа и выхода
     if random_exit:

@@ -67,6 +67,7 @@ def get_col(grid_get_col: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.
     ['3', '6', '9']
     """
     return [grid_get_col[i][pos[1]] for i in range(len(grid_get_col))]
+    # pylint: disable=line-too-long
 
 
 def get_block(grid_get_block: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str]:

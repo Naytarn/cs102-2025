@@ -4,6 +4,9 @@ from typing import List, Optional, Tuple, Union
 
 import pandas as pd
 
+DIRECTIONS = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+
+
 def create_grid(rows: int = 15, cols: int = 15) -> List[List[Union[str, int]]]:
     return [["■"] * cols for _ in range(rows)]
 
@@ -19,13 +22,13 @@ def remove_wall(
     """
 
     wall_x, wall_y = coord
-    directions = []
+    direction_list = []
     if wall_x - 2 >= 1:
-        directions.append("up")
+        direction_list.append("up")
     if wall_y + 2 < len(grid[0]) - 1:
-        directions.append("right")
-    if directions:
-        direction = choice(directions)
+        direction_list.append("right")
+    if direction_list:
+        direction = choice(direction_list)
         if direction == "right":
             grid[wall_x][wall_y + 1] = ' '
         elif direction == "up":
@@ -101,12 +104,10 @@ def make_step(grid: List[List[Union[str, int]]], k: int) -> List[List[Union[str,
     :return:
     """
 
-    directions = [[0, 1], [0, -1], [1, 0], [-1, 0]]
-
     for i, row in enumerate(grid):
         for j, cell in enumerate(row):
             if cell == k:
-                for direction in directions:
+                for direction in DIRECTIONS:
                     cell_x = i + direction[0]
                     cell_y = j + direction[1]
                     if len(grid) > cell_x >= 0 and len(grid[0]) > cell_y >= 0:
@@ -125,7 +126,23 @@ def shortest_path(
     :param exit_coord:
     :return:
     """
-    pass
+    current_x, current_y = exit_coord
+    path = [exit_coord]
+    current_k = grid[current_x][current_y]
+
+    while current_k > 1:
+        for direction in DIRECTIONS:
+            cell_x = current_x + direction[0]
+            cell_y = current_y + direction[1]
+            if len(grid) > cell_x >= 0 and len(grid[0]) > cell_y >= 0:
+                if grid[cell_x][cell_y] == current_k - 1:
+                    path.append((cell_x, cell_y))
+                    current_x, current_y = cell_x, cell_y
+                    current_k -= 1
+                    break
+
+    return path
+
 
 
 def encircled_exit(grid: List[List[Union[str, int]]], coord: Tuple[int, int]) -> bool:
@@ -136,11 +153,9 @@ def encircled_exit(grid: List[List[Union[str, int]]], coord: Tuple[int, int]) ->
     :return:
     """
 
-    directions = [[0, 1], [0, -1], [1, 0], [-1, 0]]
-
     deadend_count = 0
     exit_x, exit_y = coord
-    for direction in directions:
+    for direction in DIRECTIONS:
         x_check = exit_x + direction[0]
         y_check = exit_y + direction[1]
         if x_check < 0 or x_check >= len(grid) or y_check < 0 or y_check >= len(grid[0]):

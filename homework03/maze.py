@@ -1,5 +1,5 @@
 from copy import deepcopy
-from random import choice, randint
+from random import choice, randint, shuffle
 from typing import List, Optional, Tuple, Union
 
 import pandas as pd
@@ -128,21 +128,29 @@ def shortest_path(
     """
     current_x, current_y = exit_coord
     path = [exit_coord]
-    current_k = grid[current_x][current_y]
+    current_k = pathlen = grid[current_x][current_y]
 
-    while current_k > 1:
+    while True:
+        next_cell_isfound = False
         for direction in DIRECTIONS:
             cell_x = current_x + direction[0]
             cell_y = current_y + direction[1]
-            if len(grid) > cell_x >= 0 and len(grid[0]) > cell_y >= 0:
+            if len(grid) > cell_x >= 0 and len(grid) > cell_y >= 0:
                 if grid[cell_x][cell_y] == current_k - 1:
                     path.append((cell_x, cell_y))
                     current_x, current_y = cell_x, cell_y
                     current_k -= 1
+                    next_cell_isfound = True
                     break
 
-    return path
+        if current_k == 1 and len(path) == pathlen:
+                return path
 
+        if not next_cell_isfound:
+            bad_cell = path.pop()
+            grid[bad_cell[0]][bad_cell[1]] = 0
+            current_x, current_y = path[-1]
+            current_k = grid[current_x][current_y]
 
 
 def encircled_exit(grid: List[List[Union[str, int]]], coord: Tuple[int, int]) -> bool:
@@ -181,7 +189,24 @@ def solve_maze(
 
     for door in exits:
         if encircled_exit(grid, door):
-            return None
+            return grid, None
+
+    for i, row in enumerate(grid):
+        for j, elem in enumerate(row):
+            if elem == ' ' or elem == 'X':
+                grid[i][j] = 0
+
+    shuffle(exits)
+    entry, exit = exits
+    k = 1
+    grid[entry[0]][entry[1]] = 1
+
+    while grid[exit[0]][exit[1]] == 0:
+        grid = make_step(grid, k)
+        k += 1
+
+    path = shortest_path(grid, exit)
+    return grid, path
 
 
 def add_path_to_grid(

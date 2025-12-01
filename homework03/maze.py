@@ -118,39 +118,43 @@ def make_step(grid: List[List[Union[str, int]]], k: int) -> List[List[Union[str,
 
 
 def shortest_path(
-    grid: List[List[Union[str, int]]], exit_coord: Tuple[int, int]
-) -> Optional[Union[Tuple[int, int], List[Tuple[int, int]]]]:
+        grid: List[List[Union[str, int]]], exit_coord: Tuple[int, int]
+) -> Optional[List[Tuple[int, int]]]:  # Changed return type
     """
+    Find the shortest path from exit back to entry.
 
-    :param grid:
-    :param exit_coord:
-    :return:
+    :param grid: Grid with distance values
+    :param exit_coord: Coordinates of the exit
+    :return: Path from entry to exit as list of coordinates, or None if no path
     """
-    current_x, current_y = exit_coord
-    path = [exit_coord]
-    current_k = pathlen = grid[current_x][current_y]
+    x, y = exit_coord
 
-    while True:
-        next_cell_isfound = False
-        for direction in DIRECTIONS:
-            cell_x = current_x + direction[0]
-            cell_y = current_y + direction[1]
-            if len(grid) > cell_x >= 0 and len(grid) > cell_y >= 0:
-                if grid[cell_x][cell_y] == current_k - 1:
-                    path.append((cell_x, cell_y))
-                    current_x, current_y = cell_x, cell_y
-                    current_k -= 1
-                    next_cell_isfound = True
+    current_value = grid[x][y]
+    path = [(x, y)]
+
+    # Work with a copy to avoid modifying original
+
+    # Backtrack from exit to entry
+    while current_value > 1:
+        next_found = False
+
+        for dx, dy in DIRECTIONS:
+            nx, ny = x + dx, y + dy
+
+            if 0 <= nx < len(grid) and 0 <= ny < len(grid[0]):
+                if grid[nx][ny] == current_value - 1:
+                    path.append((nx, ny))
+                    x, y = nx, ny
+                    current_value -= 1
+                    next_found = True
                     break
 
-        if current_k == 1 and len(path) == pathlen:
-                return path
-
-        if not next_cell_isfound:
+        if not next_found:
             bad_cell = path.pop()
             grid[bad_cell[0]][bad_cell[1]] = 0
-            current_x, current_y = path[-1]
-            current_k = grid[current_x][current_y]
+            x, y = path[-1]
+            current_value = grid[x][y]
+    return path
 
 
 def encircled_exit(grid: List[List[Union[str, int]]], coord: Tuple[int, int]) -> bool:
@@ -163,6 +167,9 @@ def encircled_exit(grid: List[List[Union[str, int]]], coord: Tuple[int, int]) ->
 
     deadend_count = 0
     exit_x, exit_y = coord
+    if not (exit_x == 0 or exit_y == 0 or exit_x == len(grid) - 1 or exit_y == len(grid[0]) - 1):
+        return False
+
     for direction in DIRECTIONS:
         x_check = exit_x + direction[0]
         y_check = exit_y + direction[1]

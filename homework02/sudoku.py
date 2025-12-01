@@ -116,10 +116,12 @@ def find_possible_values(find_nums: tp.List[tp.List[str]], pos: tp.Tuple[int, in
     >>> values == {'2', '5', '9'}
     True
     """
-    used_digits: set[str] = set()
-    used_digits.update(get_row(find_nums, pos))
-    used_digits.update(get_col(find_nums, pos))
-    used_digits.update(get_block(find_nums, pos))
+
+    used_digits = (
+            set(get_row(grid, pos))
+            | set(get_col(grid, pos))
+            | set(get_block(grid, pos))
+    )
     used_digits.discard(".")
     return set(str(i + 1) for i in range(len(find_nums))) - used_digits
 

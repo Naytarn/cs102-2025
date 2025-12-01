@@ -125,7 +125,18 @@ def encircled_exit(grid: List[List[Union[str, int]]], coord: Tuple[int, int]) ->
     :return:
     """
 
-    pass
+    deadend_count = 0
+    exit_x, exit_y = coord
+    directions = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+    for direction in directions:
+        x_check = exit_x + direction[0]
+        y_check = exit_y + direction[1]
+        if x_check < 0 or x_check >= len(grid) or y_check < 0 or y_check >= len(grid[0]):
+            deadend_count += 1
+        elif grid[x_check][y_check] == '■':
+            deadend_count += 1
+
+    return True if deadend_count == 4 else False
 
 
 def solve_maze(

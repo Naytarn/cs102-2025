@@ -86,7 +86,12 @@ def get_exits(grid: List[List[Union[str, int]]]) -> List[Tuple[int, int]]:
     :return:
     """
 
-    pass
+    entry_exit_coords = []
+    for i, row in enumerate(grid):
+        for j, elem in enumerate(row):
+            if elem == 'X':
+                entry_exit_coords.append((i, j))
+    return entry_exit_coords
 
 
 def make_step(grid: List[List[Union[str, int]]], k: int) -> List[List[Union[str, int]]]:

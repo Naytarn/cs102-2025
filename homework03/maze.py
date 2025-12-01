@@ -1,5 +1,7 @@
+"""This is my torture"""
+
 from copy import deepcopy
-from random import choice, randint, shuffle
+from random import choice, randint
 from typing import List, Optional, Tuple, Union
 
 import pandas as pd
@@ -7,7 +9,9 @@ import pandas as pd
 DIRECTIONS = [[0, 1], [0, -1], [1, 0], [-1, 0]]
 
 
+# pylint: disable=line-too-long
 def create_grid(rows: int = 15, cols: int = 15) -> List[List[Union[str, int]]]:
+    """Creates grid!"""
     return [["■"] * cols for _ in range(rows)]
 
 
@@ -22,15 +26,16 @@ def remove_wall(grid: List[List[Union[str, int]]], coord: Tuple[int, int]) -> Li
     direction_list = []
     if wall_x >= 1:
         direction_list.append("up")
-    if wall_y < len(grid[0]) - 1:
+    if wall_y < len(grid[0]) - 2:
         direction_list.append("right")
     if direction_list:
         direction = choice(direction_list)
         if direction == "right":
-            grid[wall_x][wall_y + 1] = ' '
+            grid[wall_x][wall_y + 1] = " "
         elif direction == "up":
-            grid[wall_x - 1][wall_y] = ' '
+            grid[wall_x - 1][wall_y] = " "
     return grid
+
 
 def bin_tree_maze(rows: int = 15, cols: int = 15, random_exit: bool = True) -> List[List[Union[str, int]]]:
     """
@@ -41,6 +46,12 @@ def bin_tree_maze(rows: int = 15, cols: int = 15, random_exit: bool = True) -> L
     :return: generated maze
     """
     grid = create_grid(rows, cols)
+
+    for i in range(rows):
+        for j in range(cols):
+            if i % 2 == 1 and j % 2 == 1:
+                grid[i][j] = " "
+
     empty_cells = []
     for x, row in enumerate(grid):
         for y, _ in enumerate(row):
@@ -82,7 +93,7 @@ def get_exits(grid: List[List[Union[str, int]]]) -> List[Tuple[int, int]]:
     entry_exit_coords = []
     for i, row in enumerate(grid):
         for j, elem in enumerate(row):
-            if elem == 'X':
+            if elem == "X":
                 entry_exit_coords.append((i, j))
     return entry_exit_coords
 
@@ -99,9 +110,8 @@ def make_step(grid: List[List[Union[str, int]]], k: int) -> List[List[Union[str,
                 for direction in DIRECTIONS:
                     cell_x = i + direction[0]
                     cell_y = j + direction[1]
-                    if len(grid) > cell_x >= 0 and len(grid[0]) > cell_y >= 0:
-                        if grid[cell_x][cell_y] == 0:
-                            grid[cell_x][cell_y] = k + 1
+                    if len(grid) > cell_x >= 0 and len(grid[0]) > cell_y >= 0 and grid[cell_x][cell_y] == 0:
+                        grid[cell_x][cell_y] = k + 1
 
     return grid
 
@@ -116,7 +126,7 @@ def shortest_path(
     """
     current_x, current_y = exit_coord
     path = [exit_coord]
-    current_k = grid[current_x][current_y]
+    current_k = int(grid[current_x][current_y])
     while current_k > 1:
         for direction in DIRECTIONS:
             cell_x = current_x + direction[0]
@@ -146,10 +156,10 @@ def encircled_exit(grid: List[List[Union[str, int]]], coord: Tuple[int, int]) ->
         y_check = exit_y + direction[1]
         if x_check < 0 or x_check >= len(grid) or y_check < 0 or y_check >= len(grid[0]):
             deadend_count += 1
-        elif grid[x_check][y_check] == '■':
+        elif grid[x_check][y_check] == "■":
             deadend_count += 1
 
-    return True if deadend_count == 4 else False
+    return bool(deadend_count == 4)
 
 
 def solve_maze(
@@ -164,6 +174,8 @@ def solve_maze(
     exits = get_exits(grid)
     if len(exits) == 1:
         return grid, exits
+    if len(exits) < 1:
+        return grid, None
 
     for door in exits:
         if encircled_exit(grid, door):
@@ -171,20 +183,21 @@ def solve_maze(
 
     for i, row in enumerate(grid):
         for j, elem in enumerate(row):
-            if elem == ' ':
+            if elem == " ":
                 grid[i][j] = 0
 
-    entry, exit = exits
+    # pylint: disable=W0632
+    entry, exit_door = exits
 
     grid[entry[0]][entry[1]] = 1
-    grid[exit[0]][exit[1]] = 0
+    grid[exit_door[0]][exit_door[1]] = 0
     k = 1
 
-    while grid[exit[0]][exit[1]] == 0:
+    while grid[exit_door[0]][exit_door[1]] == 0:
         grid = make_step(grid, k)
         k += 1
 
-    path = shortest_path(grid, exit)
+    path = shortest_path(grid, exit_door)
     return grid, path
 
 

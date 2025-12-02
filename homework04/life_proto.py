@@ -90,7 +90,18 @@ class GameOfLife:
         """
         Отрисовка списка клеток с закрашиванием их в соответствующе цвета.
         """
-        pass
+        window = self.screen
+        grid = self.create_grid(True)
+
+        for i, row in enumerate(grid):
+            for j, cell in enumerate(row):
+                if cell == '1':
+                    cell_color = 'green'
+                else:
+                    cell_color = 'white'
+
+                cell_shape = pygame.Rect(i*self.cell_size, i*self.cell_size, self.cell_size, self.cell_size)
+                pygame.draw.rect(window, cell_color, cell_shape)
 
     def get_neighbours(self, cell: Cell) -> Cells:
         """

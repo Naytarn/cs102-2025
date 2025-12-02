@@ -3,7 +3,6 @@
 from copy import deepcopy
 from random import choice, randint
 from typing import List, Optional, Tuple, Union
-
 import pandas as pd
 
 DIRECTIONS = [[0, 1], [0, -1], [1, 0], [-1, 0]]

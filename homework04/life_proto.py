@@ -10,7 +10,7 @@ Cells = tp.List[int]
 Grid = tp.List[Cells]
 
 DEAD_OR_ALIVE = [0, 1]
-
+NEIGHBORS = [(-1, 0), (1, 0), (0, -1), (0, 1), (-1, -1), (1, 1), (-1, 1), (1, -1)]
 
 class GameOfLife:
     def __init__(
@@ -47,7 +47,7 @@ class GameOfLife:
         self.screen.fill(pygame.Color("white"))
 
         # Создание списка клеток
-        # PUT YOUR CODE HERE
+        self.grid = self.create_grid(True)
 
         running = True
         while running:
@@ -94,9 +94,8 @@ class GameOfLife:
         Отрисовка списка клеток с закрашиванием их в соответствующе цвета.
         """
         window = self.screen
-        grid = self.create_grid(True)
 
-        for i, row in enumerate(grid):
+        for i, row in enumerate(self.grid):
             for j, cell in enumerate(row):
                 if cell == '1':
                     cell_color = 'green'
@@ -124,7 +123,7 @@ class GameOfLife:
         out : Cells
             Список соседних клеток.
         """
-        pass
+        return [self.grid[cell[0] + delta[0]][cell[1] + delta[1]] for delta in NEIGHBORS]
 
     def get_next_generation(self) -> Grid:
         """

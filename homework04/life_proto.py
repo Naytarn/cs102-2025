@@ -1,4 +1,5 @@
 import random
+import time
 import typing as tp
 
 import pygame
@@ -56,6 +57,8 @@ class GameOfLife:
             self.draw_lines()
 
             # Отрисовка списка клеток
+            self.draw_grid()
+
             # Выполнение одного шага игры (обновление состояния ячеек)
             # PUT YOUR CODE HERE
 
@@ -100,7 +103,7 @@ class GameOfLife:
                 else:
                     cell_color = 'white'
 
-                cell_shape = pygame.Rect(i*self.cell_size, i*self.cell_size, self.cell_size, self.cell_size)
+                cell_shape = pygame.Rect(i*self.cell_size, j*self.cell_size, self.cell_size, self.cell_size)
                 pygame.draw.rect(window, cell_color, cell_shape)
 
     def get_neighbours(self, cell: Cell) -> Cells:

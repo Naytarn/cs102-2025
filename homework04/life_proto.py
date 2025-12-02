@@ -8,6 +8,8 @@ Cell = tp.Tuple[int, int]
 Cells = tp.List[int]
 Grid = tp.List[Cells]
 
+DEAD_OR_ALIVE = [0, 1]
+
 
 class GameOfLife:
     def __init__(
@@ -79,7 +81,10 @@ class GameOfLife:
         out : Grid
             Матрица клеток размером `cell_height` х `cell_width`.
         """
-        pass
+
+        if randomize:
+            return [[random.choice(DEAD_OR_ALIVE) for _ in range(self.cell_width)] for _ in range(self.cell_height)]
+        return [[0 for _ in range(self.cell_width)] for _ in range(self.cell_height)]
 
     def draw_grid(self) -> None:
         """

@@ -122,10 +122,23 @@ class GameOfLife:
         """
         Прочитать состояние клеток из указанного файла.
         """
-        pass
+        grid = []
+        with open(filename, 'r') as f:
+            contents = f.readlines()
+            for line in contents:
+                grid.append([int(cell) for cell in line.split()])
+
+        grid_size = (len(grid), len(grid[0]))
+        game = GameOfLife(size=grid_size, randomize=False)
+        game.curr_generation = grid
+        game.prev_generation = [[0 for _ in range(grid_size[1])] for _ in range(grid_size[0])]
+        game.generations = 1
+        return game
 
     def save(self, filename: pathlib.Path) -> None:
         """
         Сохранить текущее состояние клеток в указанный файл.
         """
-        pass
+        with open(filename, 'w') as f:
+            for row in range(self.rows):
+                f.write(' '.join([str(cell) for cell in self.curr_generation[row]]) + '\n')

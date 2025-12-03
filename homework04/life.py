@@ -53,8 +53,33 @@ class GameOfLife:
         return [[0 for _ in range(self.cols)] for _ in range(self.rows)]
 
     def get_neighbours(self, cell: Cell) -> Cells:
-        # Copy from previous assignment
-        pass
+        """
+        Вернуть список соседних клеток для клетки `cell`.
+
+        Соседними считаются клетки по горизонтали, вертикали и диагоналям,
+        то есть, во всех направлениях.
+
+        Parameters
+        ----------
+        cell : Cell
+            Клетка, для которой необходимо получить список соседей. Клетка
+            представлена кортежем, содержащим ее координаты на игровом поле.
+
+        Returns
+        ----------
+        out : Cells
+            Список соседних клеток.
+        """
+
+        neighbors = []
+        for delta in NEIGHBORS:
+            neighbor_x = cell[0] + delta[0]
+            neighbor_y = cell[1] + delta[1]
+            if not (
+                    neighbor_x >= self.rows or neighbor_y >= self.cols or neighbor_x < 0 or neighbor_y < 0):
+                neighbors.append(self.curr_generation[neighbor_x][neighbor_y])
+
+        return neighbors
 
     def get_next_generation(self) -> Grid:
         # Copy from previous assignment

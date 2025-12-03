@@ -9,7 +9,6 @@ Cell = tp.Tuple[int, int]
 Cells = tp.List[int]
 Grid = tp.List[Cells]
 
-DEAD_OR_ALIVE = [0, 1]
 NEIGHBORS = [(-1, 0), (1, 0), (0, -1), (0, 1), (-1, -1), (1, 1), (-1, 1), (1, -1)]
 
 class GameOfLife:
@@ -86,7 +85,7 @@ class GameOfLife:
         """
 
         if randomize:
-            return [[random.choice(DEAD_OR_ALIVE) for _ in range(self.cell_width)] for _ in range(self.cell_height)]
+            return [[random.choice([0, 1]) for _ in range(self.cell_width)] for _ in range(self.cell_height)]
         return [[0 for _ in range(self.cell_width)] for _ in range(self.cell_height)]
 
     def draw_grid(self) -> None:

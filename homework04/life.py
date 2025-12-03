@@ -92,7 +92,7 @@ class GameOfLife:
         """
 
         return [[1 if str(sum(self.get_neighbours((i, j)))) in '23' and self.curr_generation[i][j] == 1
-                      or sum(self.get_neighbours((i, j))) == 3 and self.curr_generation[i][j] == 0 else 0
+                or sum(self.get_neighbours((i, j))) == 3 and self.curr_generation[i][j] == 0 else 0
                  for j in range(self.cols)]
                 for i in range(self.rows)]
 
@@ -100,7 +100,8 @@ class GameOfLife:
         """
         Выполнить один шаг игры.
         """
-        pass
+        self.prev_generation, self.curr_generation = self.curr_generation, self.get_next_generation()
+        self.generations += 1
 
     @property
     def is_max_generations_exceeded(self) -> bool:

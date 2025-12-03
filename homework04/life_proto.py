@@ -97,12 +97,12 @@ class GameOfLife:
 
         for i, row in enumerate(self.grid):
             for j, cell in enumerate(row):
-                if cell == '1':
-                    cell_color = 'green'
+                if cell == 1:
+                    cell_color = 'lavender'
                 else:
-                    cell_color = 'white'
+                    cell_color = 'grey'
 
-                cell_shape = pygame.Rect(i*self.cell_size, j*self.cell_size, self.cell_size, self.cell_size)
+                cell_shape = pygame.Rect(j*self.cell_size, i*self.cell_size, self.cell_size, self.cell_size)
                 pygame.draw.rect(window, cell_color, cell_shape)
 
     def get_neighbours(self, cell: Cell) -> Cells:
@@ -147,3 +147,7 @@ class GameOfLife:
                  or sum(self.get_neighbours((i, j))) == 3 and self.grid[i][j] == 0 else 0
                  for j in range(self.cell_width)]
                 for i in range(self.cell_height)]
+
+# runs the game
+game = GameOfLife()
+game.run()

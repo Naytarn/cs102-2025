@@ -9,6 +9,7 @@ Cell = tp.Tuple[int, int]
 Cells = tp.List[int]
 Grid = tp.List[Cells]
 
+NEIGHBORS = [(-1, 0), (1, 0), (0, -1), (0, 1), (-1, -1), (1, 1), (-1, 1), (1, -1)]
 
 class GameOfLife:
     def __init__(
@@ -29,8 +30,27 @@ class GameOfLife:
         self.generations = 1
 
     def create_grid(self, randomize: bool = False) -> Grid:
-        # Copy from previous assignment
-        pass
+        """
+        Создание списка клеток.
+
+        Клетка считается живой, если ее значение равно 1, в противном случае клетка
+        считается мертвой, то есть, ее значение равно 0.
+
+        Parameters
+        ----------
+        randomize : bool
+            Если значение истина, то создается матрица, где каждая клетка может
+            быть равновероятно живой или мертвой, иначе все клетки создаются мертвыми.
+
+        Returns
+        ----------
+        out : Grid
+            Матрица клеток размером `cell_height` х `cell_width`.
+        """
+
+        if randomize:
+            return [[random.choice([0, 1]) for _ in range(self.cols)] for _ in range(self.rows)]
+        return [[0 for _ in range(self.cols)] for _ in range(self.rows)]
 
     def get_neighbours(self, cell: Cell) -> Cells:
         # Copy from previous assignment

@@ -143,4 +143,7 @@ class GameOfLife:
             Новое поколение клеток.
         """
 
-        pass
+        return [[1 if str(sum(self.get_neighbours((i, j)))) in '23' and self.grid[i][j] == 1
+                 or sum(self.get_neighbours((i, j))) == 3 and self.grid[i][j] == 0 else 0
+                 for j in range(self.cell_width)]
+                for i in range(self.cell_height)]

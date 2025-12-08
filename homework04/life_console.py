@@ -35,6 +35,9 @@ class Console(UI):
         screen.nodelay(True)
 
         while self.life.is_changing and not self.life.is_max_generations_exceeded:
+            key = screen.getch()
+            if key == ord('q'):
+                break
             screen.clear()
             self.draw_borders(screen)
             self.draw_grid(screen)

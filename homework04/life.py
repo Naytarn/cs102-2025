@@ -1,9 +1,9 @@
+"""its my life and it's now or never i aint gonna live forever"""
+
+# pylint: disable=line-too-long
 import pathlib
 import random
 import typing as tp
-
-import pygame
-from pygame.locals import *
 
 Cell = tp.Tuple[int, int]
 Cells = tp.List[int]
@@ -11,7 +11,10 @@ Grid = tp.List[Cells]
 
 NEIGHBORS = [(-1, 0), (1, 0), (0, -1), (0, 1), (-1, -1), (1, 1), (-1, 1), (1, -1)]
 
+
 class GameOfLife:
+    """game class"""
+
     def __init__(
         self,
         size: tp.Tuple[int, int],
@@ -75,8 +78,7 @@ class GameOfLife:
         for delta in NEIGHBORS:
             neighbor_x = cell[0] + delta[0]
             neighbor_y = cell[1] + delta[1]
-            if not (
-                    neighbor_x >= self.rows or neighbor_y >= self.cols or neighbor_x < 0 or neighbor_y < 0):
+            if not (neighbor_x >= self.rows or neighbor_y >= self.cols or neighbor_x < 0 or neighbor_y < 0):
                 neighbors.append(self.curr_generation[neighbor_x][neighbor_y])
 
         return neighbors
@@ -91,10 +93,20 @@ class GameOfLife:
             Новое поколение клеток.
         """
 
-        return [[1 if str(sum(self.get_neighbours((i, j)))) in '23' and self.curr_generation[i][j] == 1
-                or sum(self.get_neighbours((i, j))) == 3 and self.curr_generation[i][j] == 0 else 0
-                 for j in range(self.cols)]
-                for i in range(self.rows)]
+        return [
+            [
+                (
+                    1
+                    if str(sum(self.get_neighbours((i, j)))) in "23"
+                    and self.curr_generation[i][j] == 1
+                    or sum(self.get_neighbours((i, j))) == 3
+                    and self.curr_generation[i][j] == 0
+                    else 0
+                )
+                for j in range(self.cols)
+            ]
+            for i in range(self.rows)
+        ]
 
     def step(self) -> None:
         """
@@ -108,14 +120,14 @@ class GameOfLife:
         """
         Не превысило ли текущее число поколений максимально допустимое.
         """
-        return self.generations >= self.max_generations
+        return self.max_generations is not None and self.generations >= self.max_generations
 
     @property
     def is_changing(self) -> bool:
         """
         Изменилось ли состояние клеток с предыдущего шага.
         """
-        return not self.curr_generation == self.prev_generation
+        return self.curr_generation != self.prev_generation
 
     @staticmethod
     def from_file(filename: pathlib.Path) -> "GameOfLife":
@@ -123,7 +135,7 @@ class GameOfLife:
         Прочитать состояние клеток из указанного файла.
         """
         grid = []
-        with open(filename, 'r') as f:
+        with open(filename, "r", encoding="utf-8") as f:
             contents = f.readlines()
             for line in contents:
                 grid.append([int(cell) for cell in line.split()])
@@ -139,6 +151,6 @@ class GameOfLife:
         """
         Сохранить текущее состояние клеток в указанный файл.
         """
-        with open(filename, 'w') as f:
+        with open(filename, "w", encoding="utf-8") as f:
             for row in range(self.rows):
-                f.write(' '.join([str(cell) for cell in self.curr_generation[row]]) + '\n')
+                f.write(" ".join([str(cell) for cell in self.curr_generation[row]]) + "\n")

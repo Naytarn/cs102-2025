@@ -37,6 +37,13 @@ class GUI(UI):
                 cell_shape = pygame.Rect(j * self.cell_size, i * self.cell_size, self.cell_size, self.cell_size)
                 pygame.draw.rect(window, cell_color, cell_shape)
 
+    def set_cell_state(self, click_pos: tuple) -> None:
+        click_y, click_x = click_pos
+        cell_chosen_x = click_x // self.cell_size
+        cell_chosen_y = click_y // self.cell_size
+
+        self.life.curr_generation[cell_chosen_x][cell_chosen_y] = 1 - self.life.curr_generation[cell_chosen_x][cell_chosen_y]
+
     def run(self) -> None:
         """ Запустить игру """
         clock = pygame.time.Clock()
@@ -54,6 +61,9 @@ class GUI(UI):
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
                         paused = not paused
+                elif event.type == MOUSEBUTTONDOWN:
+                    if paused and event.button == 1:
+                        self.set_cell_state(event.pos)
             self.draw_lines()
             self.draw_grid()
             if not paused:

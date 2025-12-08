@@ -46,13 +46,18 @@ class GUI(UI):
         self.life.curr_generation = self.life.create_grid(True)
 
         running = True
+        paused = False
         while running:
             for event in pygame.event.get():
                 if event.type == QUIT:
                     running = False
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE:
+                        paused = not paused
             self.draw_lines()
             self.draw_grid()
-            self.life.step()
+            if not paused:
+                self.life.step()
 
             pygame.display.flip()
             clock.tick(self.speed)

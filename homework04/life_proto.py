@@ -1,4 +1,4 @@
-"""just a prototype!"""
+"""just a prototype! edit for a new pull req"""
 
 # pylint: disable=line-too-long
 

@@ -34,7 +34,7 @@ class GameOfLife:
 
         # Скорость протекания игры
         self.speed = speed
-        self.grid = []
+        self.grid: Grid = []
 
     def draw_lines(self) -> None:
         """Отрисовать сетку"""

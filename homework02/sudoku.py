@@ -214,22 +214,21 @@ def check_solution(solution_to_check: tp.List[tp.List[str]]) -> bool:
     False
     """
 
-    for i, row in enumerate(solution_to_check):
-        row_set = set(row)
-        col_set = set(solution_to_check[j][i] for j in range(len(solution_to_check)))
-        if row_set != set(str(num + 1) for num in range(len(solution_to_check))) or col_set != set(
-            str(num + 1) for num in range(len(solution_to_check))
-        ):
+    all_set = {str(i + 1) for i in range(len(solution_to_check))}
+
+    for i in range(len(solution_to_check)):
+        row_set = set(get_row(solution_to_check, (i, 0)))
+        col_set = set(get_col(solution_to_check, (0, i)))
+
+        if row_set != all_set or col_set != all_set:
             return False
 
     for i in range(0, len(solution_to_check), 3):
         for j in range(0, len(solution_to_check), 3):
-            block = set()
-            for x in range(3):
-                for y in range(3):
-                    block.add(solution_to_check[i + x][j + y])
-            if block != set(str(i + 1) for i in range(len(solution_to_check))):
+            block_set = set(get_block(solution_to_check, (i, j)))
+            if block_set != all_set:
                 return False
+
     return True
 
 

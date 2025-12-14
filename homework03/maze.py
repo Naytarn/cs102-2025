@@ -55,7 +55,6 @@ def bin_tree_maze(rows: int = 15, cols: int = 15, random_exit: bool = True) -> L
                 grid[i][j] = " "
                 empty_cells.append((i, j))
 
-
     # 1. выбрать любую клетку
     # 2. выбрать направление: наверх или направо.
     # Если в выбранном направлении следующая клетка лежит за границами поля,
@@ -135,8 +134,6 @@ def shortest_path(
                     current_x, current_y = cell_x, cell_y
                     break
     return path
-
-
 
 
 def encircled_exit(grid: List[List[Union[str, int]]], coord: Tuple[int, int]) -> bool:

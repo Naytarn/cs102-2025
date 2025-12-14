@@ -25,7 +25,7 @@ def remove_wall(grid: List[List[Union[str, int]]], coord: Tuple[int, int]) -> Li
     """
     wall_x, wall_y = coord
     direction_list = []
-    if wall_x >= 1:
+    if wall_x > 1:
         direction_list.append("up")
     if wall_y < len(grid[0]) - 2:
         direction_list.append("right")

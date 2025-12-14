@@ -24,16 +24,16 @@ def remove_wall(grid: List[List[Union[str, int]]], coord: Tuple[int, int]) -> Li
     :return: updated grid
     """
     wall_x, wall_y = coord
-    direction_list = []
-    if wall_x > 1:
-        direction_list.append("up")
-    if wall_y < len(grid[0]) - 2:
-        direction_list.append("right")
-    if direction_list:
-        direction = choice(direction_list)
-        if direction == "right":
+    direction = choice(("up", "right"))
+    if direction == "up":
+        if wall_x > 1:
+            grid[wall_x - 1][wall_y] = " "
+        elif wall_y < len(grid[0]) - 2:
             grid[wall_x][wall_y + 1] = " "
-        elif direction == "up":
+    else:
+        if wall_y < len(grid[0]) - 2:
+            grid[wall_x][wall_y + 1] = " "
+        elif wall_x > 1:
             grid[wall_x - 1][wall_y] = " "
     return grid
 
@@ -46,19 +46,15 @@ def bin_tree_maze(rows: int = 15, cols: int = 15, random_exit: bool = True) -> L
     :param random_exit: if True - random entrance/exit, else - fixed
     :return: generated maze
     """
-    grid = create_grid(rows, cols)
 
-    for i in range(rows):
-        for j in range(cols):
+    grid = create_grid(rows, cols)
+    empty_cells = []
+    for i, row in enumerate(grid):
+        for j, _ in enumerate(row):
             if i % 2 == 1 and j % 2 == 1:
                 grid[i][j] = " "
+                empty_cells.append((i, j))
 
-    empty_cells = []
-    for x, row in enumerate(grid):
-        for y, _ in enumerate(row):
-            if x % 2 == 1 and y % 2 == 1:
-                grid[x][y] = " "
-                empty_cells.append((x, y))
 
     # 1. выбрать любую клетку
     # 2. выбрать направление: наверх или направо.
@@ -68,8 +64,7 @@ def bin_tree_maze(rows: int = 15, cols: int = 15, random_exit: bool = True) -> L
     # 4. повторять 2-3 до тех пор, пока не будут пройдены все клетки
 
     for cell in empty_cells:
-        x, y = cell
-        remove_wall(grid, (x, y))
+        remove_wall(grid, cell)
 
     # генерация входа и выхода
     if random_exit:
@@ -99,12 +94,13 @@ def get_exits(grid: List[List[Union[str, int]]]) -> List[Tuple[int, int]]:
     return entry_exit_coords
 
 
-def make_step(grid: List[List[Union[str, int]]], k: int) -> List[List[Union[str, int]]]:
+def make_step(grid_to_copy: List[List[Union[str, int]]], k: int) -> List[List[Union[str, int]]]:
     """
     :param grid: maze grid with numeric labels
     :param k: current wave number
     :return: updated grid
     """
+    grid = deepcopy(grid_to_copy)
     for i, row in enumerate(grid):
         for j, cell in enumerate(row):
             if cell == k:
@@ -139,6 +135,8 @@ def shortest_path(
                     current_x, current_y = cell_x, cell_y
                     break
     return path
+
+
 
 
 def encircled_exit(grid: List[List[Union[str, int]]], coord: Tuple[int, int]) -> bool:

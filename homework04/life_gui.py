@@ -19,7 +19,6 @@ class GUI(UI):
         self.speed = speed
         self.height = self.life.rows * cell_size
         self.width = self.life.cols * cell_size
-        pygame.init()
         self.screen = pygame.display.set_mode((self.width, self.height))
 
     def draw_lines(self) -> None:

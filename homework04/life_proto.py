@@ -45,7 +45,7 @@ class GameOfLife:
 
     def run(self) -> None:
         """Запустить игру"""
-        pygame.init()
+        pygame.display.init()
         clock = pygame.time.Clock()
         pygame.display.set_caption("Game of Life")
         self.screen.fill(pygame.Color("white"))

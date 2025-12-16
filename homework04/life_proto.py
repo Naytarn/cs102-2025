@@ -165,6 +165,6 @@ class GameOfLife:
         ]
 
 
-# runs the game
-game = GameOfLife()
-game.run()
+if __name__ == "__main__":
+    game = GameOfLife()
+    game.run()
